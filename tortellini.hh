@@ -113,11 +113,25 @@ class ini final {
 			}
 		};
 
+		template <class It1, class It2, class BinaryPredicate>
+		static inline bool equal(
+			It1 first1, It1 last1,
+			It2 first2, It2 last2,
+			BinaryPredicate p
+		) {
+			for (; first1 != last1 && first2 != last2; ++first1, ++first2) {
+				if (!p(*first1, *first2)) {
+					return false;
+				}
+			}
+			return true;
+		}
+
 		static inline bool compare(const std::string &l, const std::string &r) noexcept {
 			// std::equal (like ==) for OOB calls
-			return std::equal(
+			return equal(
 				l.begin(), l.end(),
-				r.begin(),
+				r.begin(), r.end(),
 				case_insensitive_compare::compare
 			);
 		}
