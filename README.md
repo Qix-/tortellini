@@ -54,6 +54,7 @@ int main() {
 	// denoted by empty string in section selector
 	ini[""]["naked-key"] = "I'll be at the very top, without a section";
 
+	// (optional) Write INI to file.
 	std::ofstream out("config.ini");
 	out << ini;
 }
