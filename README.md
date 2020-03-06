@@ -76,7 +76,7 @@ Here are the caveats:
 
 - **Do not store or share anything returned from the subscript operators (`[]`).** They return temporary objects that are meant for short-lived interactions. They are NOT lifetime safe and expect the underlying `tortellini::ini` instance to subsist beyond their own lifetimes.
 - Invalid keys, values or section names skip the line entirely. This condition is henceforth referred to as "invalid data".
-- `int` and `unsigned int` arguments to the "default operator" (`operator |`) do not work. I know, weird right? Fixing it would cause some mess. Instead, use longs. Literally any long - `long`, `long long`, `unsigned long`, `unsigned long long` all work. Make sure to use integer literal suffixes (`L`, `LL`, `LL`, `ULL` respectively).
+- `int` and `unsigned int` arguments to the "default operator" (`operator |`) do not work. I know, weird right? Fixing it would cause some mess. Instead, use longs. Literally any long - `long`, `long long`, `unsigned long`, `unsigned long long` all work. Make sure to use integer literal suffixes (`L`, `LL`, `UL`, `ULL` respectively).
 - Integer overflows when parsing are invalid data.
 - Mismatched `]` for a `[` line is invalid data. Yes, keys _will_ bleed into the preceding section name. That's user error, not your application's. _Embrace it._
 - Empty keys or empty values (excluding leading/trailing whitespace!) are "invalid data" in that they might be valid but not included in the resulting data and thus _won't_ be re-emitted.
