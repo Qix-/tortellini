@@ -32,7 +32,7 @@
 
 	----------------------------------------------------------------------------
 
-	Released under a dual-licence. Take your pick, no whammies.
+	Released under a dual-license. Take your pick, no whammies.
 
 	                                 UNLICENSE
 
