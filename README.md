@@ -28,8 +28,10 @@ int main() {
 	//
 	// All keys are case-INsensitive. This includes section headers.
 	std::string s          = ini["Section"]["key"] | "default string";
+	int i                  = ini["Section"]["key"] | 42;    // default int
 	long l                 = ini["Section"]["key"] | 42L;   // default long
 	long long ll           = ini["Section"]["key"] | 42LL;  // default long long
+	unsigned int u         = ini["Section"]["key"] | 42u;   // default unsigned int
 	unsigned long ul       = ini["Section"]["key"] | 42UL;  // default unsigned long
 	unsigned long long ull = ini["Section"]["key"] | 42ULL; // default unsigned long long
 	float f                = ini["Section"]["key"] | 42.0f; // default float
@@ -45,6 +47,8 @@ int main() {
 	// what you'd really want. I would hope I wouldn't
 	// have to explain this, but you never know.)
 	ini["New Section"]["new-key"] = "Noodles are tasty.";
+	ini["New Section"]["new-key"] = 1234;
+	ini["New Section"]["new-key"] = 1234u;
 	ini["New Section"]["new-key"] = 1234L;
 	ini["New Section"]["new-key"] = 1234UL;
 	ini["New Section"]["new-key"] = 1234LL;
@@ -81,7 +85,6 @@ Here are the caveats:
 
 - **Do not store or share anything returned from the subscript operators (`[]`).** They return temporary objects that are meant for short-lived interactions. They are NOT lifetime safe and expect the underlying `tortellini::ini` instance to subsist beyond their own lifetimes.
 - Invalid keys, values or section names skip the line entirely. This condition is henceforth referred to as "invalid data".
-- `int` and `unsigned int` arguments to the "default operator" (`operator |`) do not work. I know, weird right? Fixing it would cause some mess. Instead, use longs. Literally any long - `long`, `long long`, `unsigned long`, `unsigned long long` all work. Make sure to use integer literal suffixes (`L`, `LL`, `UL`, `ULL` respectively).
 - Integer overflows when parsing are invalid data.
 - Mismatched `]` for a `[` line is invalid data. Yes, keys _will_ bleed into the preceding section name. That's user error, not your application's. _Embrace it._
 - Empty keys or empty values (excluding leading/trailing whitespace!) are "invalid data" in that they might be valid but not included in the resulting data and thus _won't_ be re-emitted.

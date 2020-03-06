@@ -42,9 +42,11 @@ int main() {
 	ini["Runtime"]["some-false"] = false;
 	ini[""]["naked"] = true;
 	ini["InTeGeRs"]["int"] = -12345;
+	ini["InTeGeRs"]["int"] = (int) -12345;
 	ini["InTeGeRs"]["long"] = -12345L;
 	ini["InTeGeRs"]["longlong"] = -12345LL;
-	ini["InTeGeRs"]["uint"] = 12345;
+	ini["InTeGeRs"]["uint"] = 12345u;
+	ini["InTeGeRs"]["uint"] = (unsigned int) 12345;
 	ini["InTeGeRs"]["ulong"] = 12345L;
 	ini["InTeGeRs"]["ulonglong"] = 12345LL;
 	ini["InTeGeRs"]["float"] = 12.34f;
@@ -63,10 +65,12 @@ int main() {
 	D("nOODLE FACE", "smiling", "not set!");
 	D("pasta", "al_dente", false);
 	D("HEXME", "color", 0L);
-	D("Integers", "int", 10L);
+	D("Integers", "int", 10);
+	D("Integers", "int", (int) 10);
 	D("Integers", "long", 10L);
 	D("Integers", "longlong", 10LL);
-	D("Integers", "uint", 10UL);
+	D("Integers", "uint", 10);
+	D("Integers", "uint", (unsigned int) 10);
 	D("Integers", "ulong", 10UL);
 	D("Integers", "ulonglong", 10ULL);
 	D("Integers", "float", 10.0f);

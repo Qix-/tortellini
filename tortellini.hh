@@ -90,12 +90,10 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
-#include <cctype>
 #include <locale>
 #include <sstream>
-#include <cstdlib>
-#include <cerrno>
 #include <type_traits>
+#include <limits>
 
 namespace tortellini {
 
@@ -149,24 +147,34 @@ public:
 
 		inline value(value &&) = default;
 
-		template <typename T, T (*Fn)(const char *, char **, int)>
-		static inline T strparse(const std::string &s, T fallback) {
+		template <typename T, T (*Fn)(const std::string &, size_t *)>
+		static inline T strparse(const std::string &s, T fallback) noexcept {
 			if (s.empty()) return fallback;
-			char *end = nullptr;
-			T res = Fn(s.c_str(), &end, 0);
-			return (*end || errno == ERANGE)
-				? fallback
-				: res;
+
+			try {
+				size_t idx;
+				T res = Fn(s, &idx);
+				return s[idx] ? fallback : res;
+			} catch (std::out_of_range &) {
+				return fallback;
+			} catch (std::invalid_argument &) {
+				return fallback;
+			}
 		}
 
-		template <typename T, T (*Fn)(const char *, char **)>
-		static inline T strparse(const std::string &s, T fallback) {
+		template <typename T, T (*Fn)(const std::string &, size_t *, int)>
+		static inline T strparse(const std::string &s, T fallback) noexcept {
 			if (s.empty()) return fallback;
-			char *end = nullptr;
-			T res = Fn(s.c_str(), &end);
-			return (*end || errno == ERANGE)
-				? fallback
-				: res;
+
+			try {
+				size_t idx;
+				T res = Fn(s, &idx, 0);
+				return s[idx] ? fallback : res;
+			} catch (std::out_of_range &) {
+				return fallback;
+			} catch (std::invalid_argument &) {
+				return fallback;
+			}
 		}
 
 		template <typename T>
@@ -215,31 +223,59 @@ public:
 		}
 
 		inline unsigned long operator |(unsigned long fallback) const {
-			return strparse<unsigned long, std::strtoul>(_value, fallback);
+			return strparse<unsigned long, std::stoul>(_value, fallback);
 		}
 
 		inline unsigned long long operator |(unsigned long long fallback) const {
-			return strparse<unsigned long long, std::strtoull>(_value, fallback);
+			return strparse<unsigned long long, std::stoull>(_value, fallback);
 		}
 
 		inline long operator |(long fallback) const {
-			return strparse<long, std::strtol>(_value, fallback);
+			return strparse<long, std::stol>(_value, fallback);
 		}
 
 		inline long long operator |(long long fallback) const {
-			return strparse<long long, std::strtoll>(_value, fallback);
+			return strparse<long long, std::stoll>(_value, fallback);
 		}
 
 		inline float operator |(float fallback) const {
-			return strparse<float, std::strtof>(_value, fallback);
+			return strparse<float, std::stof>(_value, fallback);
 		}
 
 		inline double operator |(double fallback) const {
-			return strparse<double, std::strtod>(_value, fallback);
+			return strparse<double, std::stod>(_value, fallback);
 		}
 
 		inline double operator |(long double fallback) const {
-			return strparse<long double, std::strtold>(_value, fallback);
+			return strparse<long double, std::stold>(_value, fallback);
+		}
+
+		inline int operator |(int fallback) const {
+			return strparse<int, std::stoi>(_value, fallback);
+		}
+
+		inline unsigned int operator |(unsigned int fallback) const {
+			/*
+				This is necessary because there is no std::stou.
+			*/
+			try {
+				size_t idx;
+				unsigned long ul = std::stoul(_value, &idx, 0);
+
+				if (
+					   sizeof(unsigned int) != sizeof(unsigned long)
+					&& ul > std::numeric_limits<unsigned int>::max()
+				) {
+					// out of range
+					return fallback;
+				}
+
+				return static_cast<unsigned int>(ul);
+			} catch (std::out_of_range &) {
+				return fallback;
+			} catch (std::invalid_argument &) {
+				return fallback;
+			}
 		}
 	};
 
