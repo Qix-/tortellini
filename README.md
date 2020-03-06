@@ -79,7 +79,7 @@ Here are the caveats:
 - `int` and `unsigned int` arguments to the "default operator" (`operator |`) do not work. I know, weird right? Fixing it would cause some mess. Instead, use longs. Literally any long - `long`, `long long`, `unsigned long`, `unsigned long long` all work. Make sure to use integer literal suffixes (`L`, `LL`, `LL`, `ULL` respectively).
 - Integer overflows when parsing are invalid data.
 - Mismatched `]` for a `[` line is invalid data. Yes, keys _will_ bleed into the preceding section name. That's user error, not your application's. _Embrace it._
-- Empty keys or empty values (excluding whitespace!) are "invalid data" in that they might be valid but not included in the resulting data and thus _won't_ be re-emitted.
+- Empty keys or empty values (excluding leading/trailing whitespace!) are "invalid data" in that they might be valid but not included in the resulting data and thus _won't_ be re-emitted.
 - Empty sections (or sections with 100% invalid data as key/value pairs) are themselves invalid data and are not emitted.
 - `[]` is a valid section name. It means the "naked" section. Re-emitting the INI will move those keys to the top regardless of where `[]` is positioned in the input file.
 - No comments are supported; `;` is a valid (string) character.
