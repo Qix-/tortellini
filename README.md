@@ -25,6 +25,8 @@ int main() {
 	//
 	// The right-hand-side type is what is returned. Anything other
 	// than a string-like type causes a parse (see caveats section below).
+	//
+	// All keys are case-INsensitive. This includes section headers.
 	std::string s          = ini["Section"]["key"] | "default string";
 	long l                 = ini["Section"]["key"] | 42L;   // default long
 	long long ll           = ini["Section"]["key"] | 42LL;  // default long long
@@ -66,6 +68,7 @@ This library has very few bells and whistles. It doesn't do anything fancy.
 
 Here are the guarantees/features:
 
+- Case-insensitive keys and section headers. Reading from a key/section with different cases will work fine, and writing to an existing section/key will preserve the casing.
 - Untouched output (from using `stream << ini`) is guaranteed to be parsable (by using `stream >> ini`).
 - Barring I/O issues or exceptions coming from the standard library, Tortellini will not throw or abort (see below section about "invalid data").
 - _Pasta in, pasta out._ Source strings (from a parse) are preserved to the output. If you use `yes` instead of `true`, Tortellini will preserve that (unless the application overwrites the value).
