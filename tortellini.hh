@@ -114,14 +114,16 @@ class ini final {
 		};
 
 		static inline bool compare(const std::string &l, const std::string &r) noexcept {
-			return std::lexicographical_compare(
+			// std::equal (like ==) for OOB calls
+			return std::equal(
 				l.begin(), l.end(),
-				r.begin(), r.end(),
+				r.begin(),
 				case_insensitive_compare::compare
 			);
 		}
 
 		inline bool operator()(const std::string &l, const std::string &r) const noexcept {
+			// lex compare (like <) for map
 			return std::lexicographical_compare(
 				l.begin(), l.end(),
 				r.begin(), r.end(),
