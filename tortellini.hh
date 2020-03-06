@@ -95,7 +95,6 @@
 #include <sstream>
 #include <cstdlib>
 #include <cerrno>
-#include <cstring>
 #include <type_traits>
 
 namespace tortellini {
@@ -104,14 +103,32 @@ class ini final {
 	friend class value;
 
 	struct case_insensitive {
+		struct case_insensitive_compare {
+			bool operator()(const unsigned char &l, const unsigned char &r) const {
+				// < for map
+				return std::tolower(l) < std::tolower(r);
+			}
+
+			inline static bool compare(const unsigned char &l, const unsigned char &r) {
+				// == for OOB calls
+				return std::tolower(l) == std::tolower(r);
+			}
+		};
+
 		static inline bool compare(const std::string &l, const std::string &r) noexcept {
-			// == for OOB calls
-			return ::strcasecmp(l.c_str(), r.c_str()) == 0;
+			return std::lexicographical_compare(
+				l.begin(), l.end(),
+				r.begin(), r.end(),
+				case_insensitive_compare::compare
+			);
 		}
 
 		inline bool operator()(const std::string &l, const std::string &r) const noexcept {
-			// < for map
-			return ::strcasecmp(l.c_str(), r.c_str()) < 0;
+			return std::lexicographical_compare(
+				l.begin(), l.end(),
+				r.begin(), r.end(),
+				case_insensitive_compare()
+			);
 		}
 	};
 
