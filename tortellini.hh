@@ -220,6 +220,10 @@ public:
 		inline double operator |(double fallback) const {
 			return strparse<double, std::strtod>(_value, fallback);
 		}
+
+		inline double operator |(long double fallback) const {
+			return strparse<long double, std::strtold>(_value, fallback);
+		}
 	};
 
 	class section final {

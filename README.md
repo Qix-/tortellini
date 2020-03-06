@@ -34,6 +34,7 @@ int main() {
 	unsigned long long ull = ini["Section"]["key"] | 42ULL; // default unsigned long long
 	float f                = ini["Section"]["key"] | 42.0f; // default float
 	double d               = ini["Section"]["key"] | 42.0;  // default double
+	long double ld         = ini["Section"]["key"] | 42.0L; // default long double
 	bool b                 = ini["Section"]["key"] | true;  // default bool
 
 	// Assignment
@@ -50,6 +51,7 @@ int main() {
 	ini["New Section"]["new-key"] = 1234ULL;
 	ini["New Section"]["new-key"] = 1234.0f;
 	ini["New Section"]["new-key"] = 1234.0;
+	ini["New Section"]["new-key"] = 1234.0L;
 	ini["New Section"]["new-key"] = true;
 
 	// "Naked" section (top-most key/value pairs, before a section header)
