@@ -52,6 +52,7 @@ int main() {
 	ini["InTeGeRs"]["float"] = 12.34f;
 	ini["InTeGeRs"]["double"] = 12.34;
 	ini["InTeGeRs"]["longdouble"] = 12.34L;
+	ini["othertest"]["int"] = "1234k";
 
 	string foo = "a string";
 	ini["cpptypes"]["string"] = foo;
@@ -76,6 +77,7 @@ int main() {
 	D("Integers", "float", 10.0f);
 	D("Integers", "double", 10.0);
 	D("Integers", "longdouble", 10.0L);
+	D("othertest", "int", 100);
 	#undef D
 	std::cout << std::endl << "----------------" << std::endl << std::endl;
 
