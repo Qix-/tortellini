@@ -2,6 +2,11 @@
 #define TORTELLINI_HH__
 #pragma once
 
+#ifndef NOMINMAX
+#	define _TORTELLINI_UNDEFINE_NOMIMAX_PLEASE
+#	define NOMINMAX
+#endif
+
 /*
 	                                ⣀⣀⣀⣀⣀⣀⣀⡀
 	                         ⢀⠄         ⠉⠉⠉⠛⠛⠿⠿⢶⣶⣤⣄⡀
@@ -421,4 +426,7 @@ public:
 
 }
 
+#ifdef _TORTELLINI_UNDEFINE_NOMIMAX_PLEASE
+#	undef NOMINMAX
+#endif
 #endif
