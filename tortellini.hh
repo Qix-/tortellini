@@ -257,7 +257,7 @@ public:
 			return strparse<double, std::stod>(_value, fallback);
 		}
 
-		inline double operator |(long double fallback) const {
+		inline long double operator |(long double fallback) const {
 			return strparse<long double, std::stold>(_value, fallback);
 		}
 
