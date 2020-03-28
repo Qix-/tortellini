@@ -23,7 +23,7 @@ jobs:
     - name: Extract tag name
       shell: bash
       run: |
-        echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+        echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/} | sed 's/\//_/g')"
         echo "${BRANCH_NAME}" 
 
     - name: Nuget Pack
