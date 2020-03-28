@@ -36,5 +36,5 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       working-directory: .
       run: |
-        nuget pack torteliniw.nuspec -version ${{ GITHUB_REF # 'refs/tags/' }} -OutputFileNamesWithoutVersion -OutputDirectory dist
+        nuget pack torteliniw.nuspec -version 1.0.0 -OutputFileNamesWithoutVersion -OutputDirectory dist
         nuget push dist\torteliniw.nupkg -ApiKey ${{secrets.nuget_api_key}} -Source https://api.nuget.org/v3/index.json
