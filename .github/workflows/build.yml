@@ -20,12 +20,11 @@ jobs:
     - name: Setup NuGet
       uses: warrenbuckley/Setup-Nuget@v1
       
-    - uses: rlespinasse/github-slug-action@master
-    - name: Print slug variables
+    - name: Extract tag name
+      shell: bash
       run: |
-        echo ${{ env.GITHUB_REF_SLUG }}
-        echo ${{ env.GITHUB_HEAD_REF_SLUG }}
-        echo ${{ env.GITHUB_BASE_REF_SLUG }}
+        echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
+        echo "${BRANCH_NAME}" 
 
     - name: Nuget Pack
       working-directory: .
