@@ -26,6 +26,8 @@ jobs:
       with:
         tagRegex: "([0-9\\.]+.*)"  # Optional. Returns specified group text as tag name. Full tag string is returned if regex is not defined.
         tagRegexGroup: 1 # Optional. Default is 1.
+        
+    - name: Show tag name
       run: echo $GIT_TAG_NAME
 
     - name: Nuget Pack
