@@ -92,7 +92,7 @@
 */
 
 #include <map>
-#include <string>
+#include <wstring>
 #include <iostream>
 #include <algorithm>
 #include <locale>
@@ -107,18 +107,18 @@ class ini final {
 
 	struct case_insensitive {
 		struct case_insensitive_compare {
-			bool operator()(const unsigned char &l, const unsigned char &r) const {
+			bool operator()(const unsigned wchar_t &l, const unsigned wchar_t &r) const {
 				// < for map
 				return std::tolower(l) < std::tolower(r);
 			}
 
-			inline static bool compare(const unsigned char &l, const unsigned char &r) {
+			inline static bool compare(const unsigned wchar_t &l, const unsigned wchar_t &r) {
 				// == for OOB calls
 				return std::tolower(l) == std::tolower(r);
 			}
 		};
 
-		static inline bool compare(const std::string &l, const std::string &r) noexcept {
+		static inline bool compare(const std::wstring &l, const std::wstring &r) noexcept {
 			// std::equal (like ==) for OOB calls
 			if (l.size() != r.size()) {
 				return false;
@@ -131,7 +131,7 @@ class ini final {
 			);
 		}
 
-		inline bool operator()(const std::string &l, const std::string &r) const noexcept {
+		inline bool operator()(const std::wstring &l, const std::wstring &r) const noexcept {
 			// lex compare (like <) for map
 			return std::lexicographical_compare(
 				l.begin(), l.end(),
@@ -147,9 +147,9 @@ public:
 	class value final {
 		friend section;
 
-		std::string &_value;
+		std::wstring &_value;
 
-		inline value(std::string &_value)
+		inline value(std::wstring &_value)
 		: _value(_value)
 		{}
 
@@ -158,8 +158,8 @@ public:
 
 		inline value(value &&) = default;
 
-		template <typename T, T (*Fn)(const std::string &, size_t *)>
-		static inline T strparse(const std::string &s, T fallback) noexcept {
+		template <typename T, T (*Fn)(const std::wstring &, size_t *)>
+		static inline T strparse(const std::wstring &s, T fallback) noexcept {
 			if (s.empty()) return fallback;
 
 			try {
@@ -173,8 +173,8 @@ public:
 			}
 		}
 
-		template <typename T, T (*Fn)(const std::string &, size_t *, int)>
-		static inline T strparse(const std::string &s, T fallback) noexcept {
+		template <typename T, T (*Fn)(const std::wstring &, size_t *, int)>
+		static inline T strparse(const std::wstring &s, T fallback) noexcept {
 			if (s.empty()) return fallback;
 
 			try {
@@ -190,8 +190,8 @@ public:
 
 		template <typename T>
 		typename std::enable_if<
-			!std::is_convertible<T, std::string>::value,
-			std::string
+			!std::is_convertible<T, std::wstring>::value,
+			std::wstring
 		>::type to_string(T r) const {
 			if (std::is_same<T, bool>::value) {
 				return r ? "yes" : "no";
@@ -202,8 +202,8 @@ public:
 
 		template <typename T>
 		typename std::enable_if<
-			std::is_convertible<T, std::string>::value,
-			std::string
+			std::is_convertible<T, std::wstring>::value,
+			std::wstring
 		>::type to_string(T r) const {
 			return r;
 		}
@@ -225,11 +225,11 @@ public:
 				);
 		}
 
-		inline std::string operator |(std::string fallback) const {
+		inline std::wstring operator |(std::wstring fallback) const {
 			return _value.empty() ? fallback : _value;
 		}
 
-		inline std::string operator |(const char *fallback) const {
+		inline std::wstring operator |(const wchar_t *fallback) const {
 			return _value.empty() ? fallback : _value;
 		}
 
@@ -293,9 +293,9 @@ public:
 	class section final {
 		friend class ini;
 
-		std::map<std::string, std::string, case_insensitive> &_mapref;
+		std::map<std::wstring, std::wstring, case_insensitive> &_mapref;
 
-		inline section(std::map<std::string, std::string, case_insensitive> &_mapref)
+		inline section(std::map<std::wstring, std::wstring, case_insensitive> &_mapref)
 		: _mapref(_mapref)
 		{}
 
@@ -305,27 +305,27 @@ public:
 		inline section(section &&) = default;
 
 	public:
-		inline value operator[](std::string key) {
+		inline value operator[](std::wstring key) {
 			return value(_mapref[key]);
 		}
 	};
 
 private:
-	std::map<std::string, std::map<std::string, std::string, case_insensitive>, case_insensitive> _sections;
+	std::map<std::wstring, std::map<std::wstring, std::wstring, case_insensitive>, case_insensitive> _sections;
 
-	static inline void ltrim(std::string &s) {
+	static inline void ltrim(std::wstring &s) {
 		s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) {
 			return !std::isspace(ch);
 		}));
 	}
 
-	static inline void rtrim(std::string &s) {
+	static inline void rtrim(std::wstring &s) {
 		s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) {
 			return !std::isspace(ch);
 		}).base(), s.end());
 	}
 
-	static inline void trim(std::string &s) {
+	static inline void trim(std::wstring &s) {
 		ltrim(s);
 		rtrim(s);
 	}
@@ -335,14 +335,14 @@ public:
 	inline ini(const ini &) = default;
 	inline ini(ini &&) = default;
 
-	inline section operator[](std::string name) noexcept {
+	inline section operator[](std::wstring name) noexcept {
 		return section(_sections[name]);
 	}
 
 	template <typename TStream>
 	friend inline TStream & operator>>(TStream &stream, tortellini::ini &ini) {
-		std::string line;
-		std::string section_name = "";
+		std::wstring line;
+		std::wstring section_name = "";
 
 		while (std::getline(stream, line)) {
 			trim(line);
@@ -351,23 +351,23 @@ public:
 
 			if (line[0] == '[') {
 				size_t idx = line.find_first_of("]");
-				if (idx == std::string::npos) continue; // invalid, drop line
+				if (idx == std::wstring::npos) continue; // invalid, drop line
 				section_name = line.substr(1, idx - 1);
 				trim(section_name);
 				continue;
 			}
 
-			std::string key;
-			std::string value;
+			std::wstring key;
+			std::wstring value;
 
 			size_t idx = line.find_first_of("=");
-			if (idx == std::string::npos) continue; // invalid, drop line
+			if (idx == std::wstring::npos) continue; // invalid, drop line
 
 			key = line.substr(0, idx);
 			trim(key);
 			if (
 				   key.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_")
-				!= std::string::npos
+				!= std::wstring::npos
 			) {
 				// invalid (keys can only be alpha-numeric-hyphen-undercore), drop line
 				continue;

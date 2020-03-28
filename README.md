@@ -27,7 +27,7 @@ int main() {
 	// than a string-like type causes a parse (see caveats section below).
 	//
 	// All keys are case-INsensitive. This includes section headers.
-	std::string s          = ini["Section"]["key"] | "default string";
+	std::wstring s         = ini["Section"]["key"] | "default string";
 	int i                  = ini["Section"]["key"] | 42;    // default int
 	long l                 = ini["Section"]["key"] | 42L;   // default long
 	long long ll           = ini["Section"]["key"] | 42LL;  // default long long
@@ -91,7 +91,7 @@ Here are the caveats:
 - Empty sections (or sections with 100% invalid data as key/value pairs) are themselves invalid data and are not emitted.
 - `[]` is a valid section name. It means the "naked" section. Re-emitting the INI will move those keys to the top regardless of where `[]` is positioned in the input file.
 - No comments are supported; `;` is a valid (string) character.
-- No caching or memoization; if you retrieve anything but a `std::string`, there _will_ be a parse. I never said Tortellini was hyper-over-optimized.
+- No caching or memoization; if you retrieve anything but a `std::wstring`, there _will_ be a parse. I never said Tortellini was hyper-over-optimized.
 
 # License
 
