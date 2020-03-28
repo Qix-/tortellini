@@ -21,10 +21,12 @@ jobs:
       uses: warrenbuckley/Setup-Nuget@v1
       
     - name: Extract tag name
-      shell: bash
-      run: |
-        echo "::set-env name=BRANCH_NAME::$(echo ${{GITHUB_REF#refs/}})"
-        echo "Branch Name: ${BRANCH_NAME}" 
+    - uses: olegtarasov/get-tag@v2
+      id: tagName
+      with:
+        tagRegex: "([0-9\.]+.*)"  # Optional. Returns specified group text as tag name. Full tag string is returned if regex is not defined.
+        tagRegexGroup: 1 # Optional. Default is 1.
+      run: echo $GIT_TAG_NAME
 
     - name: Nuget Pack
       working-directory: .
