@@ -21,7 +21,7 @@ jobs:
       uses: warrenbuckley/Setup-Nuget@v1
       
     - name: Extract tag name
-    - uses: olegtarasov/get-tag@v2
+      uses: olegtarasov/get-tag@v2
       id: tagName
       with:
         tagRegex: "([0-9\\.]+.*)"  # Optional. Returns specified group text as tag name. Full tag string is returned if regex is not defined.
