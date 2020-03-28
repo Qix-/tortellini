@@ -19,6 +19,13 @@ jobs:
 
     - name: Setup NuGet
       uses: warrenbuckley/Setup-Nuget@v1
+      
+    - uses: rlespinasse/github-slug-action@master
+    - name: Print slug variables
+      run: |
+        echo ${{ env.GITHUB_REF_SLUG }}
+        echo ${{ env.GITHUB_HEAD_REF_SLUG }}
+        echo ${{ env.GITHUB_BASE_REF_SLUG }}
 
     - name: Nuget Pack
       working-directory: .
