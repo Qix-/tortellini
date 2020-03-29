@@ -194,9 +194,9 @@ public:
 			std::wstring
 		>::type to_string(T r) const {
 			if (std::is_same<T, bool>::value) {
-				return r ? "yes" : "no";
+				return r ? L"yes" : L"no";
 			} else {
-				return std::to_string(r);
+				return std::to_wstring(r);
 			}
 		}
 
@@ -335,22 +335,22 @@ public:
 	inline ini(const ini &) = default;
 	inline ini(ini &&) = default;
 
-	inline section operator[](std::wstring name) noexcept {
+	inline section operator[](const std::wstring& name) noexcept {
 		return section(_sections[name]);
 	}
 
 	template <typename TStream>
 	friend inline TStream & operator>>(TStream &stream, tortellini::ini &ini) {
 		std::wstring line;
-		std::wstring section_name = "";
+		std::wstring section_name = L"";
 
 		while (std::getline(stream, line)) {
 			trim(line);
 
 			if (line.empty()) continue;
 
-			if (line[0] == '[') {
-				size_t idx = line.find_first_of("]");
+			if (line[0] == L'[') {
+				size_t idx = line.find_first_of(L"]");
 				if (idx == std::wstring::npos) continue; // invalid, drop line
 				section_name = line.substr(1, idx - 1);
 				trim(section_name);
@@ -360,13 +360,13 @@ public:
 			std::wstring key;
 			std::wstring value;
 
-			size_t idx = line.find_first_of("=");
+			size_t idx = line.find_first_of(L"=");
 			if (idx == std::wstring::npos) continue; // invalid, drop line
 
 			key = line.substr(0, idx);
 			trim(key);
 			if (
-				   key.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_")
+				   key.find_first_not_of(L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_")
 				!= std::wstring::npos
 			) {
 				// invalid (keys can only be alpha-numeric-hyphen-undercore), drop line
@@ -390,11 +390,11 @@ public:
 
 		// force emit empty section if it exists
 		{
-			const auto &itr = ini._sections.find("");
+			const auto &itr = ini._sections.find(L"");
 			if (itr != ini._sections.cend()) {
 				for (const auto &kv : itr->second) {
 					if (kv.first.empty() || kv.second.empty()) continue;
-					stream << kv.first << " = " << kv.second << std::endl;
+					stream << kv.first << L" = " << kv.second << std::endl;
 					has_sections = true;
 				}
 			}
@@ -411,12 +411,12 @@ public:
 
 				if (!has_emitted) {
 					if (has_sections) stream << std::endl;
-					stream << '[' << section.first << ']' << std::endl;
+					stream << L'[' << section.first << L']' << std::endl;
 					has_emitted = true;
 					has_sections = true;
 				}
 
-				stream << kv.first << " = " << kv.second << std::endl;
+				stream << kv.first << L" = " << kv.second << std::endl;
 			}
 		}
 
