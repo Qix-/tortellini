@@ -15,7 +15,7 @@ int main() {
 
 	// (optional) Read INI in from a file.
 	// Default construction and subsequent assignment is just fine, too.
-	std::ifstream in("config.ini");
+	std::wifstream in(L"config.ini");
 	in >> ini;
 
 	// Retrieval
@@ -27,17 +27,17 @@ int main() {
 	// than a string-like type causes a parse (see caveats section below).
 	//
 	// All keys are case-INsensitive. This includes section headers.
-	std::wstring s         = ini["Section"]["key"] | "default string";
-	int i                  = ini["Section"]["key"] | 42;    // default int
-	long l                 = ini["Section"]["key"] | 42L;   // default long
-	long long ll           = ini["Section"]["key"] | 42LL;  // default long long
-	unsigned int u         = ini["Section"]["key"] | 42u;   // default unsigned int
-	unsigned long ul       = ini["Section"]["key"] | 42UL;  // default unsigned long
-	unsigned long long ull = ini["Section"]["key"] | 42ULL; // default unsigned long long
-	float f                = ini["Section"]["key"] | 42.0f; // default float
-	double d               = ini["Section"]["key"] | 42.0;  // default double
-	long double ld         = ini["Section"]["key"] | 42.0L; // default long double
-	bool b                 = ini["Section"]["key"] | true;  // default bool
+	std::wstring s         = ini[L"Section"][L"key"] | L"default string";
+	int i                  = ini[L"Section"][L"key"] | 42;    // default int
+	long l                 = ini[L"Section"][L"key"] | 42L;   // default long
+	long long ll           = ini[L"Section"][L"key"] | 42LL;  // default long long
+	unsigned int u         = ini[L"Section"][L"key"] | 42u;   // default unsigned int
+	unsigned long ul       = ini[L"Section"][L"key"] | 42UL;  // default unsigned long
+	unsigned long long ull = ini[L"Section"][L"key"] | 42ULL; // default unsigned long long
+	float f                = ini[L"Section"][L"key"] | 42.0f; // default float
+	double d               = ini[L"Section"][L"key"] | 42.0;  // default double
+	long double ld         = ini[L"Section"][L"key"] | 42.0L; // default long double
+	bool b                 = ini[L"Section"][L"key"] | true;  // default bool
 
 	// Assignment
 	//
@@ -46,24 +46,24 @@ int main() {
 	// same key over and over again - probably not
 	// what you'd really want. I would hope I wouldn't
 	// have to explain this, but you never know.)
-	ini["New Section"]["new-key"] = "Noodles are tasty.";
-	ini["New Section"]["new-key"] = 1234;
-	ini["New Section"]["new-key"] = 1234u;
-	ini["New Section"]["new-key"] = 1234L;
-	ini["New Section"]["new-key"] = 1234UL;
-	ini["New Section"]["new-key"] = 1234LL;
-	ini["New Section"]["new-key"] = 1234ULL;
-	ini["New Section"]["new-key"] = 1234.0f;
-	ini["New Section"]["new-key"] = 1234.0;
-	ini["New Section"]["new-key"] = 1234.0L;
-	ini["New Section"]["new-key"] = true;
+	ini[L"New Section"][L"new-key"] = L"Noodles are tasty.";
+	ini[L"New Section"][L"new-key"] = 1234;
+	ini[L"New Section"][L"new-key"] = 1234u;
+	ini[L"New Section"][L"new-key"] = 1234L;
+	ini[L"New Section"][L"new-key"] = 1234UL;
+	ini[L"New Section"][L"new-key"] = 1234LL;
+	ini[L"New Section"][L"new-key"] = 1234ULL;
+	ini[L"New Section"][L"new-key"] = 1234.0f;
+	ini[L"New Section"][L"new-key"] = 1234.0;
+	ini[L"New Section"][L"new-key"] = 1234.0L;
+	ini[L"New Section"][L"new-key"] = true;
 
 	// "Naked" section (top-most key/value pairs, before a section header)
 	// denoted by empty string in section selector
-	ini[""]["naked-key"] = "I'll be at the very top, without a section";
+	ini[L""][L"naked-key"] = L"I'll be at the very top, without a section";
 
 	// (optional) Write INI to file.
-	std::ofstream out("config.ini");
+	std::wofstream out(L"config.ini");
 	out << ini;
 }
 ```

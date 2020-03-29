@@ -92,7 +92,7 @@
 */
 
 #include <map>
-#include <wstring>
+#include <string>
 #include <iostream>
 #include <algorithm>
 #include <locale>
@@ -107,12 +107,12 @@ class ini final {
 
 	struct case_insensitive {
 		struct case_insensitive_compare {
-			bool operator()(const unsigned wchar_t &l, const unsigned wchar_t &r) const {
+			bool operator()(const wchar_t &l, const wchar_t &r) const {
 				// < for map
 				return std::tolower(l) < std::tolower(r);
 			}
 
-			inline static bool compare(const unsigned wchar_t &l, const unsigned wchar_t &r) {
+			inline static bool compare(const wchar_t &l, const wchar_t &r) {
 				// == for OOB calls
 				return std::tolower(l) == std::tolower(r);
 			}
@@ -219,9 +219,9 @@ public:
 			return _value.empty()
 				? fallback
 				: (
-					   case_insensitive::compare(_value, "1")
-					|| case_insensitive::compare(_value, "true")
-					|| case_insensitive::compare(_value, "yes")
+					   case_insensitive::compare(_value, L"1")
+					|| case_insensitive::compare(_value, L"true")
+					|| case_insensitive::compare(_value, L"yes")
 				);
 		}
 
