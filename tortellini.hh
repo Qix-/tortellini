@@ -195,6 +195,10 @@ public:
 		>::type to_string(T r) const {
 			if (std::is_same<T, bool>::value) {
 				return r ? "yes" : "no";
+			} else if (std::is_same<T, float>::value || std::is_same<T, double>::value) {
+				std::ostringstream out;
+				out << std::setprecision(std::numeric_limits<T>::max_digits10 - 1) << r;
+				return out.str();
 			} else {
 				return std::to_string(r);
 			}
