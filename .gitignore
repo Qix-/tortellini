@@ -1,1 +1,9 @@
 .vscode/
+conan*
+coverage/
+test
+*.profdata
+*.profraw
+*.html
+*.json
+catch2.hpp

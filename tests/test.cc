@@ -1,7 +1,6 @@
 #define CATCH_CONFIG_MAIN
-#include "catch2.hpp"
-
-#include "./tortellini.hh"
+#include "../catch2.hpp"
+#include "../tortellini.hh"
 
 #include <iostream>
 #include <string>
@@ -116,7 +115,7 @@ void test_create(const typename std::enable_if<std::is_floating_point<T>::value,
 	oss << ini;
 
 	std::stringstream ss;
-	ss << "uut = " << std::to_string(expected) << "\n";
+	ss << "uut = " << std::setprecision(std::numeric_limits<T>::max_digits10 -1) << expected << "\n";
 	CHECK(oss.str() == ss.str());
 }
 }
@@ -246,8 +245,7 @@ TEST_CASE("Can use default when value is wrong type"){
 	}
 
 	SECTION("bool"){
-		test_default_wrong_type<bool>(true);
-		test_default_wrong_type<bool>(false);
+		test_default_wrong_type<bool>(false); // All wrong types are false
 	}
 
 	SECTION("double"){
@@ -429,7 +427,7 @@ TEST_CASE("Creating an ini"){
 	}
 
 	SECTION("Can create double"){
-		test_create<double>(432.20);
+		test_create<double>(432.2);
 		test_create<double>(-432.0);
 	}
 
@@ -484,6 +482,6 @@ TEST_CASE("Creating an ini"){
 		ss << ini;
 
 		// because of the comparison opterator I can be sure the items are in alphabetical order
-		CHECK(ss.str() == "global = section\nhello = world\n\n[sub]\nsection = 99\nterfuge = 666.666000\n");
+		CHECK(ss.str() == "global = section\nhello = world\n\n[sub]\nsection = 99\nterfuge = 666.6660000000001\n");
 	}	
 }

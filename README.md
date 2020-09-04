@@ -94,11 +94,10 @@ Here are the caveats:
 - No caching or memoization; if you retrieve anything but a `std::string`, there _will_ be a parse. I never said Tortellini was hyper-over-optimized.
 
 # Testing
-This uses `catch2` as a test framework. You can test by running:
+You can test by running:
 
 ```bash
-g++ -o test test.cc --std=c++11
-./test
+make
 ```
 
 # License
