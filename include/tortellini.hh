@@ -100,6 +100,7 @@
 #include <sstream>
 #include <type_traits>
 #include <limits>
+#include <cctype>
 
 namespace tortellini {
 
