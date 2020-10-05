@@ -348,8 +348,18 @@ public:
 	friend inline TStream & operator>>(TStream &stream, tortellini::ini &ini) {
 		std::string line;
 		std::string section_name = "";
+		bool first_line = true;
 
 		while (std::getline(stream, line)) {
+			if (first_line) {
+				first_line = false;
+
+				// trim BOM if it is present.
+				if (line.length() >= 3 && line.substr(0, 3) == "\xEF\xBB\xBF") {
+					line = line.substr(3);
+				}
+			}
+
 			trim(line);
 
 			if (line.empty()) continue;

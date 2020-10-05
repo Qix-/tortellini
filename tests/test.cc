@@ -124,7 +124,7 @@ TEST_CASE("Reading an ini"){
 
 	SECTION("Can read in"){
 		std::istringstream iss{"hello"};
-		iss >> ini;	
+		iss >> ini;
 	}
 
 	SECTION("Can read a global section"){
@@ -289,7 +289,7 @@ TEST_CASE("Can use defaults when value out of range"){
 		test_oor<int>(-42);
 	}
 
-	SECTION("bool"){	
+	SECTION("bool"){
 		test_oor<bool>(true);
 		test_oor<bool>(false);
 	}
@@ -466,8 +466,7 @@ TEST_CASE("Creating an ini"){
 		std::ostringstream ss;
 		ss << ini;
 		CHECK(ss.str() == "global = section\n\n[sub]\nsection = 99\n");
-	}	
-
+	}
 
 	SECTION("Can create multiple things in multiple sections"){
 		ini[""]["global"] = "section";
@@ -481,7 +480,16 @@ TEST_CASE("Creating an ini"){
 		ss.str(std::string{});
 		ss << ini;
 
-		// because of the comparison opterator I can be sure the items are in alphabetical order
+		// because of the comparison operator I can be sure the items are in alphabetical order
 		CHECK(ss.str() == "global = section\nhello = world\n\n[sub]\nsection = 99\nterfuge = 666.6660000000001\n");
-	}	
+	}
+
+	SECTION("Skips UTF-8 BOM"){
+		std::stringstream ss;
+		ss << "\xEF\xBB\xBF""foo=bar\r\nworks=true\r\n";
+		std::istringstream iss(ss.str());
+		iss >> ini;
+		CHECK((ini[""]["foo"] | "nope") == "bar");
+		CHECK((ini[""]["works"] | false) == true);
+	}
 }
