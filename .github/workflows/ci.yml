@@ -3,26 +3,20 @@ on: [push]
 
 jobs:
   buildlinux:
-    name: Test Linux
+    name: Test
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v2
+      - name: Install CMake
+        run: |
+          sudo apt install cmake
+      - name: Configure
+        run: |
+          mkdir build && cd build && cmake ..
+      - name: Build
+        run: |
+          cmake --build build
       - name: Test
-        run: make 
-  buildmac:
-    name: Test macOS
-    runs-on: macos-latest
-    timeout-minutes: 3
-    steps:
-      - uses: actions/checkout@v2
-      - name: Test
-        run: make 
-  buildwindows:
-    name: Test Windows
-    runs-on: windows-latest
-    timeout-minutes: 3
-    steps:
-      - uses: actions/checkout@v2
-      - name: Test
-        run: make 
+        run: |
+          cd build && ctest

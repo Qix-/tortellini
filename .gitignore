@@ -1,8 +1,1 @@
-.vscode/
-conan*
-coverage/
-test
-*.profdata
-*.profraw
-*.html
-*.json
+/build/

@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
-#include "../catch2.hpp"
-#include "../tortellini.hh"
+#include "catch2.hpp"
+#include "../include/tortellini.hh"
 
 #include <iostream>
 #include <string>
