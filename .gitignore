@@ -6,4 +6,3 @@ test
 *.profraw
 *.html
 *.json
-catch2.hpp
