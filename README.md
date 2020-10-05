@@ -78,7 +78,7 @@ Here are the guarantees/features:
 - Untouched output (from using `stream << ini`) is guaranteed to be parsable (by using `stream >> ini`).
 - Barring I/O issues or exceptions coming from the standard library, Tortellini will not throw or abort (see below section about "invalid data").
 - _Pasta in, pasta out._ Source strings (from a parse) are preserved to the output. If you use `yes` instead of `true`, Tortellini will preserve that (unless the application overwrites the value).
-- `yes`, `1` and `true` are all parsable as `bool(true)`. All other values equate to `false`.
+- `yes`, `1` and `true` are all parsable as `bool(true)`. All other values equate to `false`. **NOTE:** This means that `ini[""]["b"] | true` will return `false`, _not_ `true`, if the key exists but is not a valid, parsable truth-ey value. This may be counter-intuitive for some users.
 - All values are inherently string, and only parsed when retrieved.
 
 Here are the caveats:
