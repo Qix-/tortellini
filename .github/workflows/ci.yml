@@ -13,7 +13,7 @@ jobs:
           sudo apt install cmake
       - name: Configure
         run: |
-          mkdir build && cd build && cmake ..
+          mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON
       - name: Build
         run: |
           cmake --build build
