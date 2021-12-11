@@ -419,7 +419,6 @@ public:
 		for (const auto &section : ini._sections) {
 			if (section.first.empty()) continue; // already emitted
 
-
 			bool has_emitted = false;
 
 			for (const auto &kv : section.second) {
