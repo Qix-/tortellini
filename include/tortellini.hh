@@ -422,13 +422,8 @@ public:
 
 			key = line.substr(0, idx);
 			trim(key);
-			if (
-				   key.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_")
-				!= std::string::npos
-			) {
-				// invalid (keys can only be alpha-numeric-hyphen-undercore), drop line
-				continue;
-			}
+
+			if (key.empty()) continue;
 
 			value = line.substr(idx + 1);
 			trim(value);

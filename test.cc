@@ -141,6 +141,14 @@ TEST_CASE("Reading an ini"){
 		CHECK(std::string{ini["hello"]["naked"] | "none"} == "rat");
 	}
 
+	SECTION("Can read periods in key names"){
+		const auto text = std::string{"foo.0 = 10\nfoo.1 = 20\n"};
+		std::istringstream ss{text};
+		ss >> ini;
+		CHECK((ini[""]["foo.0"] | 0) == 10);
+		CHECK((ini[""]["foo.1"] | 0) == 20);
+	}
+
 	SECTION("int"){
 		test_read<int>("5", 5);
 	}
@@ -218,13 +226,6 @@ TEST_CASE("Reading an ini"){
 
 TEST_CASE("File reading failures"){
 	tortellini::ini ini;
-	SECTION("Can't read poorly formed ini key"){
-		const auto uut = "[hello]\nv = world\n[__!!__]\n@@ = expected\n";
-		std::istringstream ss{uut};
-		ss >> ini;
-		CHECK(std::string{ini["__!!__"]["@@"] | "unexpected"} == "unexpected");
-	}
-
 	SECTION("Discards incomplete header"){
 		const auto text = "[hello\nv = 4";
 		std::istringstream ss{text};
