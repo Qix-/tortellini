@@ -1,13 +1,11 @@
 project (tortellini)
 cmake_minimum_required (VERSION 3.2)
 
-option (TORTELLINI_BUILD_TESTS "Configure test targets for Tortellini" ON)
-
 add_library (tortellini INTERFACE)
 target_include_directories (tortellini INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_sources (tortellini INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include/tortellini.hh")
 
-if (TORTELLINI_BUILD_TESTS)
+if (BUILD_TESTING)
 	enable_testing ()
 	add_executable (tortellini-tests test.cc catch2.hpp)
 	target_link_libraries (tortellini-tests PRIVATE tortellini)
