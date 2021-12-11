@@ -493,3 +493,26 @@ TEST_CASE("Creating an ini"){
 		CHECK((ini[""]["works"] | false) == true);
 	}
 }
+
+TEST_CASE("Iterating an INI") {
+	tortellini::ini ini;
+	std::istringstream("[foo]\nfoo1 = true\nfoo2 = 1234\n\n[bar]\nbar1 = hello\nbar2 = 12345") >> ini;
+
+	SECTION("Can iterate sections") {
+		for (const auto &section_pair : ini) {
+			const auto &name = section_pair.name;
+			const auto &section = section_pair.section;
+
+			if (name == "foo") {
+				CHECK((section["foo1"] | false) == true);
+				CHECK((section["foo2"] | 0) == 1234);
+			} else if (name == "bar") {
+				CHECK((section["bar1"] | "") == "hello");
+				CHECK((section["bar2"] | 0) == 12345);
+			} else {
+				FAIL("too many sections");
+				break;
+			}
+		}
+	}
+}

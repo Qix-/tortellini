@@ -311,7 +311,7 @@ public:
 		inline section(section &&) = default;
 
 	public:
-		inline value operator[](std::string key) {
+		inline value operator[](std::string key) const {
 			return value(_mapref[key]);
 		}
 	};
@@ -337,12 +337,53 @@ private:
 	}
 
 public:
+	class iterator {
+		friend class ini;
+		using section_iterator = decltype(_sections)::iterator;
+		section_iterator _itr;
+		inline iterator(section_iterator itr)
+		: _itr(itr)
+		{}
+
+	public:
+		struct section_pair {
+			std::string name;
+			::tortellini::ini::section section;
+		};
+
+		inline ~iterator() = default;
+
+		inline section_pair operator*() noexcept {
+			return { _itr->first, section(_itr->second) };
+		}
+
+		inline iterator & operator++() {
+			_itr++;
+			return *this;
+		}
+
+		inline bool operator==(const iterator &other) const {
+			return _itr == other._itr;
+		}
+		inline bool operator!=(const iterator &other) const {
+			return _itr != other._itr;
+		}
+	};
+
 	inline ini() = default;
 	inline ini(const ini &) = default;
 	inline ini(ini &&) = default;
 
 	inline section operator[](std::string name) noexcept {
 		return section(_sections[name]);
+	}
+
+	inline iterator begin() {
+		return {_sections.begin()};
+	}
+
+	inline iterator end() {
+		return {_sections.end()};
 	}
 
 	template <typename TStream>
