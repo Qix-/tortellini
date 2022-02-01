@@ -104,7 +104,10 @@ Here are the caveats:
 You can test by running:
 
 ```bash
-make
+mkdir build && cd build
+cmake .. -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug
+cmake --build .
+ctest
 ```
 
 # License
