@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef NOMINMAX
-#	define _TORTELLINI_UNDEFINE_NOMIMAX_PLEASE
+#	define _TORTELLINI_UNDEFINE_NOMINMAX_PLEASE
 #	define NOMINMAX
 #endif
 
@@ -477,7 +477,7 @@ public:
 
 }
 
-#ifdef _TORTELLINI_UNDEFINE_NOMIMAX_PLEASE
+#ifdef _TORTELLINI_UNDEFINE_NOMINMAX_PLEASE
 #	undef NOMINMAX
 #endif
 #endif
