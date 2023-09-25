@@ -7,7 +7,7 @@ target_sources (tortellini INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/include/tortel
 
 if (BUILD_TESTING)
 	enable_testing ()
-	add_executable (tortellini-tests test.cc catch2.hpp)
+	add_executable (tortellini-tests test.cc catch2/catch_amalgamated.hpp catch2/catch_amalgamated.cpp)
 	target_link_libraries (tortellini-tests PRIVATE tortellini)
 
 	target_compile_options (tortellini-tests PRIVATE
@@ -16,6 +16,6 @@ if (BUILD_TESTING)
 
 	add_test (
 		NAME tortellini-test
-		COMMAND $<TARGET_FILE:tortellini-tests>
+		COMMAND $<TARGET_FILE:tortellini-tests> -s
 	)
 endif ()

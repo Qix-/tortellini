@@ -19,4 +19,4 @@ jobs:
           cmake --build build
       - name: Test
         run: |
-          cd build && ctest -VV -- -ls
+          cd build && ctest -VV

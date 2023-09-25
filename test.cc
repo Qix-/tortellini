@@ -1,10 +1,12 @@
 #define CATCH_CONFIG_MAIN
-#include "catch2.hpp"
+#include "catch2/catch_amalgamated.hpp"
 #include "../include/tortellini.hh"
 
 #include <iostream>
 #include <string>
 #include <sstream>
+
+using namespace Catch;
 
 namespace{
 template<typename T>
